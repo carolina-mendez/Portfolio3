@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS!</title>
+
+    <style>
+        form {display: flex;
+              flex-direction: column;
+              width: 45vw;
+              height: 75vh;
+              margin: 15vw auto;
+              background-color: aqua;
+              justify-content: space-between;
+              padding: 3% 6% ;
+              box-sizing: border-box;}
+
+</style>
+</head>
+<body>
+
+    <h1 onclick="alert ('Bienvenido!!')">Practicando JavaScript!!</h1>
+    <table id="tabla"> </table>
+
+    <form>
+          <label for="nombre">Nombre</label>
+          <input type="text" name="nombre" id="nombre">
+
+          <label for="Apellido">Apellido</label>
+          <input type="text" name="apellido" id="apellido">
+
+          <label for="email">email</label>
+          <input type="text" name="email" id="email">
+
+          <label for="Contraseña">Contraseña</label>
+          <input type="text" name="contraseña" id="contraseña">
+
+          <label for="repass">Validar Contraseña</label>
+          <input type="text" name="repass" id="repass">
+
+          <label for="Comentario">Comentario <span></span></label>
+          <textarea name="Comentario" id="Comentario"></textarea>
+
+          <button> Enviar!!</button>
+
+    </form>
+
+    <script>
+             document.querySelector("#nombre").onblur = function (){ // Aca valido. Si el nombre tiene + de 2 caracteres, borde verde y sino rojo
+              if (this.value.length >= 2) {
+                this.style.borderColor = "green"  
+              }else {
+                this.style.borderColor = "red"
+              }
+            }
+
+        
+            function ValidarNombreYApellido (input){
+              if (input.value.length >= 2){
+                input.style.borderColor = "green";
+              }else {
+                input.style.borderColor = "red";
+              }
+            }
+    
+            document.querySelector("#nombre").onblur = function(){
+              ValidarNombreYApellido(this);
+            }
+
+            document.querySelector("#apellido").onblur = function(){
+              ValidarNombreYApellido(this);
+            }
+
+            
+            //Tenemos que recorrer el mail q ingresa el usuario con un bucle for y en la que encuentre en la cadena de texto un "@" estaria ok.
+
+            document.querySelector("#email").onblur = function(){
+              for (let i = 0; i < this.value.length; i++){
+                console.log(this.value.length[i]); // Solo para ver que funciona y recorre letra x letra
+                if (this.value[i] === "@"){ // Logica: si en x posicion del indice i encontras un signo identico al @, hace algo
+                  console.log("Encontre un signo @"); // Aca tamb solo para ver q cuando lo pruebo funciona
+                  this.style.borderColor = "green";
+                  break; // IMPORTANTISIMO ESTE BREAK, si yo no lo pongo, al seguir completando los caracteres despues del @ por ej un hotmail.com, me va a poner borde rojo, porque nunca salio del bucle y no volvio a encontrar otro @ como para poner el borde verde. Entonces al ponerle el break sale del bucle.
+                }else{
+                  this.style.borderColor = "red";
+                }
+              }
+            }
+
+            // Inputs contraseña: Que posean al menos 6 caracteres y q coincidan entre si
+
+            function validarPass (input){
+              if(input.value.length >= 6){
+                input.style.borderColor = "green";
+                return true;
+              }else{input.style.borderColor = "red";
+              input.title = "La contraseña debe tener al menos 6 caracteres"; //Este es el cartelito que al acercar el mouse al input dice la leyenda, sino para dejar un cartel fijo con la leyenda se crea un label o spam al lado del input fijo.
+              return false; 
+            }
+            }
+
+            // Para comparar que las contras coincidan hacemos asi:
+
+            function compararPass (){
+              let stringPass = document.querySelector("#contraseña").value;  // Aca tomo los 2 inputs y lo guardo en una variable let
+              let stringRepass= document.querySelector("#repass").value;
+
+              if (stringPass === stringRepass){
+                document.querySelector("#contraseña").style.borderColor = "green"; // Aca digo que si son iguales ambos inputs van a tener borde verde
+                document.querySelector("#repass").style.borderColor = "green";
+              }else{
+                document.querySelector("#contraseña").style.borderColor = "red";  // Y sino son iguales, van a tener borde rojo
+                document.querySelector("#repass").style.borderColor = "red";
+              }
+            }  // Pero me falta llamar a la funcion, porque sino no va a andar. Por eso la llamo mas abajo, cuando hago el evento onblur
+
+            document.querySelector("#contraseña").onblur = function(){
+              if (validarPass(this) == true){ // Este true es por el return true que puse mas arriba, osea que si en validar pass, la funcion te dio verdadera, entonces ahora llama a la funcion compararPass, sino no, para que se resuelva la primer validacion de que los caracteres son mas de 6 y despues podamos seguir con el paso de validar que sean iguales.
+              compararPass(); // Aca llamo a la funcion anterior de comparar contraseñas para que se ejecute cuando hago el evento onblur.
+            }
+          }
+
+            document.querySelector("#repass").onblur = function(){
+              validarPass(this);
+              compararPass(); // Aca la vuelvo a llamar porque debo llamarla en los 2 inputs, sino no funciona!!
+            }
+
+            
+
+            
+
+    </script>
+    
+</body>
+</html>
